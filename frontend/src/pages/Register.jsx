@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
-
+import { useDispatch,useSelector } from 'react-redux'
+import { register } from "../features/auth/authSlice";
+import { useNavigate } from 'react-router-dom'
+import { reset } from "../features/auth/authSlice";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,6 +13,9 @@ const Register = () => {
     password2: "",
   });
   const { name, email, password, password2 } = formData;
+  const dispatch= useDispatch()
+  const navigate= useNavigate()
+  const { user,isLoading,isSuccess,message,isError }= useSelector(state=>state.auth)
   const onChange=(e)=>{
     setFormData((prevstate)=>({
         ...prevstate,
@@ -17,11 +23,32 @@ const Register = () => {
 
     }))
   }
+
+  useEffect(()=>{
+
+    if(isError){
+      toast.error(message)
+    }
+    // redirect to loggin
+    if(isSuccess || user){
+      navigate('/')
+      
+    }
+    dispatch(reset())
+    
+
+  },[isError,isSuccess,user,message,navigate,dispatch])
+
   const onSubmit=(e)=>{
     e.preventDefault()
     if(password !== password2){
         toast.error('password  do not match')
         
+    }else{
+      const userData={
+        name, email,password
+      }
+      dispatch(register(userData))
     }
 
   }
@@ -30,7 +57,7 @@ const Register = () => {
     <>
       <section className="heading">
         <h1>
-          <FaUser /> Register
+          <FaUser /> Register 
         </h1>
         <p>Please create an account</p>
       </section>
