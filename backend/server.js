@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/api/users', require('./routes/userRoutes'))
 
+app.use('/api/tickets', require('./routes/ticketRoutes'))
+
 app.get('/', (req, res) => {
   res.status(201).json({ message: 'welcom to the support app' })
 })
