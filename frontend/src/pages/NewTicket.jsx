@@ -13,7 +13,7 @@ function NewTicket() {
   const [product, setProduct] = useState("iMac");
   const [description, setDescription] = useState("");
 
-  const { isLoading,isError,isSuccess,message}= useSelector((state)=>state.ticket)
+  const { isLoading,isError,isSuccess,message}= useSelector((state)=>state.tickets)
   const dispatch = useDispatch()
   const navigate= useNavigate()
   useEffect(()=>{

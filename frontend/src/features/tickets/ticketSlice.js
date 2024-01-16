@@ -47,7 +47,7 @@ export const getTickets = createAsyncThunk(
 )
 
 const ticketSlice = createSlice({
-  name: 'ticket',
+  name: 'tickets',
   initialState,
   reducers: {
     reset: (state) => initialState,
