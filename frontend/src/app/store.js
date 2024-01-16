@@ -5,6 +5,6 @@ import tickReducer from '../features/tickets/ticketSlice'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    ticket: tickReducer,
+    tickets: tickReducer,
   },
 })
