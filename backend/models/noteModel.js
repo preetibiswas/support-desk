@@ -25,7 +25,7 @@ const noteSchema = mongoose.Schema(
     },
   },
   {
-    timeStamps: true,
+    timestamps: true,
   },
 )
 

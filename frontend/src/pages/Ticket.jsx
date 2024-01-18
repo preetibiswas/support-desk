@@ -6,11 +6,15 @@ import Spinner from "../components/Spinner";
 import { useParams,useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { closeTicket } from "../features/tickets/ticketSlice";
+import { getNotes } from "../features/notes/noteSlice";
+import NoteItem from "../components/NoteItem";
 
 const Ticket = () => {
   const { ticket, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.tickets
   );
+  const {notes,isLoading:notesIsLoading } =useSelector((state)=>state.notes)
+
   const params = useParams();
   const  navigate= useNavigate()
   const dispatch = useDispatch();
@@ -21,6 +25,7 @@ const Ticket = () => {
       toast.error(message);
     }
     dispatch(getTicket(ticketId));
+    dispatch(getNotes(ticketId))
   }, [isError, message, ticketId]);
   const onTicketClose= ()=>{
     dispatch(closeTicket(ticketId))
@@ -29,7 +34,7 @@ const Ticket = () => {
 
   }
 
-  if (isLoading) {
+  if (isLoading || notesIsLoading) {
     return <Spinner />;
   }
   if (isError) {
@@ -49,7 +54,9 @@ const Ticket = () => {
         <h3>Description of Issue</h3>
         <p>{ticket.description}</p>
       </div>
+      <h2>Notes</h2>
       </header>
+     {notes.map((note)=><NoteItem key={note._id} note={note}/>)}
       {ticket.status !== 'closed' && (<button
       onClick={onTicketClose}
       className="btn btn-block btn-danger"
