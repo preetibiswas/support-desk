@@ -26,4 +26,32 @@ const getNotes = asyncHandler(async (req, res) => {
   res.status(200).json(notes)
 })
 
-module.exports = { getNotes }
+// createdNOtes
+// Post api/tickets/:ticketId/notes
+// private
+const addNote = asyncHandler(async (req, res) => {
+  // get user useing the id in the jwt
+  const user = await User.findById(req.user.id)
+  console.log('user', user)
+  if (!user) {
+    res.status(401)
+    throw new Error('user not Found')
+  }
+  const ticket = await Ticket.findById(req.params.tickerId)
+  console.log('ticket', req.params)
+
+  if (ticket.user.toString() !== req.user.id) {
+    res.status(401)
+    throw new Error('User not  Authorized')
+  }
+  const note = await Note.create({
+    ticket: req.params.ticketId,
+    text: req.body.text,
+    isStaff: false,
+    user: req.user.id,
+  })
+
+  res.status(200).json(note)
+})
+
+module.exports = { getNotes, addNote }
