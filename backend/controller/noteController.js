@@ -21,7 +21,7 @@ const getNotes = asyncHandler(async (req, res) => {
     res.status(401)
     throw new Error('User not  Authorized')
   }
-  const notes = await Note.find({ ticket: req.params.ticketId })
+  const notes = await Note.find({ ticket: req.params.tickerId })
 
   res.status(200).json(notes)
 })
@@ -45,7 +45,7 @@ const addNote = asyncHandler(async (req, res) => {
     throw new Error('User not  Authorized')
   }
   const note = await Note.create({
-    ticket: req.params.ticketId,
+    ticket: req.params.tickerId,
     text: req.body.text,
     isStaff: false,
     user: req.user.id,
